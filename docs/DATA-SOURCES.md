@@ -163,6 +163,17 @@ display data without a citation back to one of these entries.
     the `/map/` page from 404-ing; the TalukMap component handles empty
     features array via its `coverage: missing` fallback. Authoritative
     polygon fetch is a follow-up task (see BUG-TRACKER).
+- **Nagpur (registered 2026-10-29, not live — `active: false`):**
+  - District polygon already present in `maharashtra-districts.json`
+    (feature `{name: "Nagpur", slug: "nagpur", stateSlug: "maharashtra"}`);
+    reused unchanged.
+  - **`public/geo/nagpur-taluks.json`** — stub FeatureCollection with
+    `features: []` and an empty `_expected_taluks`: the taluka names are not
+    yet checked against the Nagpur district portal, so none are listed.
+    Intended polygon source is DataMeet Maps (its README says CC BY 4.0
+    unless a dataset states otherwise; the Geography section above says
+    "OGL India / CC-BY 2.5 IN" — confirm the licence of the specific
+    sub-district file before use).
 
 ### SHRUG (Development Data Lab)
 

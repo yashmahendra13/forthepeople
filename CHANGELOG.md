@@ -10,6 +10,10 @@ Branch `audit-fixes-2026-09`, five parallel work-streams merged from one end-to-
 production site (prod = `38df958`, deployed 2026-06-11). Nothing here is deployed until it is
 reviewed and pushed; see "Manual actions" at the bottom of this entry.
 
+### Added — Nagpur (Maharashtra) registered, not live (branch `feat/add-nagpur`, 2026-10-29)
+
+- Nagpur is registered in `districts.ts` with `active: false` and no population, area or taluk figures; `public/geo/nagpur-taluks.json` is an empty stub with an inline `_attribution`. No seed files yet: the Nagpur district, NMC, ZP, Census and ECI portals could not be opened from the build session (network policy), and nothing may be seeded from sources that were not read. Requested in upstream issue #18. Schema unchanged.
+
 ### Added — support nudge + support page refresh (branch `v57/support`, 2026-09-28)
 
 - A small, non-modal "Sorry to interrupt" card asks for support once, after 90 s of active (visible-tab) time across pages: never on /support, admin, contribute or payment pages, never after a verified payment on that browser, never in the first 20 s of a visit, never while another dialog or the first-visit tour is up, at most once per session; closing snoozes 7 days, "Support the project" 30 days. Prices come from `TIER_CONFIG`; en/hi/kn strings; rules unit-tested (`tests/support-nudge.test.ts`); dev-only `?nudge=1`. `/support` moved to White Calm: white bordered cards, two light bands (plans, supporters), hover lift, selected-plan outline, checkout in its own card footer.

@@ -1236,7 +1236,17 @@ export const INDIA_STATES: State[] = [
           { slug: "purandar", name: "Purandar", nameLocal: "पुरंदर" },
         ],
       },
-      lockedDistrict("nagpur", "Nagpur"),
+      // Nagpur — registered but NOT live (active: false). Leaders, offices,
+      // budgets and the taluk list are not verified against opened sources
+      // yet, so no population, area or taluk figures are set here. Map
+      // coordinates are in district-centroids.ts. Set active: true only once
+      // the leaders and every named item are verified.
+      {
+        slug: "nagpur", name: "Nagpur", nameLocal: "नागपूर",
+        names: { hi: "नागपुर", kn: "ನಾಗಪುರ" },
+        active: false,
+        taluks: [],
+      },
       lockedDistrict("nashik", "Nashik"),
       lockedDistrict("chhatrapati-sambhajinagar", "Chhatrapati Sambhajinagar"),
     ],

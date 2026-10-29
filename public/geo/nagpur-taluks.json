@@ -1,0 +1,8 @@
+{
+  "_attribution": "Nagpur district taluka polygons PENDING — no source has been opened and verified yet, so no polygons and no taluka names are listed. Intended sources (in order of preference): (1) datameet/maps — https://github.com/datameet/maps (the repository README states CC BY 4.0 'unless explicitly stated'; confirm the licence of the specific sub-district file and the taluka names against the Nagpur district portal before use); (2) geohacker/india — https://github.com/geohacker/india. Stub file exists so TalukMap loads valid JSON (empty FeatureCollection) and falls back to 'coverage: missing' instead of 404. The district polygon is not in this file: it is the Nagpur feature already in maharashtra-districts.json.",
+  "_fetched_at": null,
+  "_expected_features": null,
+  "_expected_taluks": [],
+  "type": "FeatureCollection",
+  "features": []
+}
