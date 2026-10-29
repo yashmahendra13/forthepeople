@@ -10,6 +10,10 @@ Branch `audit-fixes-2026-09`, five parallel work-streams merged from one end-to-
 production site (prod = `38df958`, deployed 2026-06-11). Nothing here is deployed until it is
 reviewed and pushed; see "Manual actions" at the bottom of this entry.
 
+### Fixed — supporter social link: Instagram handles starting with "p" or "reel" (branch `fix/instagram-handle-truncated`, 2026-10-29)
+
+- `detectAndCleanSocialLink` treated `p` and `reel` as an optional URL prefix, so `@priya` was saved as `instagram.com/riya`, `@pradeep_k` as `radeep_k` and `reelsbyraj` as `sbyraj` (a link to a different account on the supporter wall), and a `/reels/…` link was read as the profile `s`. Post, reel, reels and tv links are now recognised as "no profile in this link" and handles keep every letter (`tests/social-detect.test.ts`). Links already saved with a cut handle are not repaired.
+
 ### Added — support nudge + support page refresh (branch `v57/support`, 2026-09-28)
 
 - A small, non-modal "Sorry to interrupt" card asks for support once, after 90 s of active (visible-tab) time across pages: never on /support, admin, contribute or payment pages, never after a verified payment on that browser, never in the first 20 s of a visit, never while another dialog or the first-visit tour is up, at most once per session; closing snoozes 7 days, "Support the project" 30 days. Prices come from `TIER_CONFIG`; en/hi/kn strings; rules unit-tested (`tests/support-nudge.test.ts`); dev-only `?nudge=1`. `/support` moved to White Calm: white bordered cards, two light bands (plans, supporters), hover lift, selected-plan outline, checkout in its own card footer.

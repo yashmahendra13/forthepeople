@@ -40,9 +40,12 @@ export function detectAndCleanSocialLink(rawInput: string): SocialDetectResult |
 
   // INSTAGRAM
   if (url.includes("instagram.com")) {
-    const match = url.match(/instagram\.com\/(?:p|reel|stories\/)?([a-zA-Z0-9._]+)/);
+    // Only "stories/" is skipped: "p" and "reel" are first path segments that
+    // mean "this is a post", and skipping them as a prefix ate the first letters
+    // of handles such as @priya.
+    const match = url.match(/instagram\.com\/(?:stories\/)?([a-zA-Z0-9._]+)/);
     const username = match?.[1] ?? "";
-    if (["p", "reel", "explore", "direct", "accounts"].includes(username)) {
+    if (["p", "reel", "reels", "tv", "explore", "direct", "accounts"].includes(username)) {
       return null; // can't determine profile from post/reel URL
     }
     if (!username) return null;

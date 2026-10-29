@@ -3,7 +3,7 @@
  * optional social link on the support checkout form.
  */
 import { describe, it, expect } from "vitest";
-import { detectSocialPlatform, validateSocialLink } from "@/lib/social-detect";
+import { detectAndCleanSocialLink, detectSocialPlatform, validateSocialLink } from "@/lib/social-detect";
 
 describe("detectSocialPlatform", () => {
   it("returns null for empty input", () => {
@@ -56,5 +56,25 @@ describe("validateSocialLink", () => {
     expect(r.valid).toBe(false);
     expect(r.cleanUrl).toBeNull();
     expect(r.warning).toBe("Invalid link format");
+  });
+});
+
+describe("detectAndCleanSocialLink (Instagram)", () => {
+  it("keeps handles that start with p or reel intact", () => {
+    expect(detectAndCleanSocialLink("@priya")?.cleanUrl).toBe("https://instagram.com/priya");
+    expect(detectAndCleanSocialLink("@pradeep_k")?.username).toBe("pradeep_k");
+    expect(detectAndCleanSocialLink("instagram.com/priya.sharma")?.cleanUrl).toBe("https://instagram.com/priya.sharma");
+    expect(detectAndCleanSocialLink("https://www.instagram.com/reelsbyraj/")?.username).toBe("reelsbyraj");
+  });
+
+  it("still cannot find a profile from a post, reel or explore link", () => {
+    expect(detectAndCleanSocialLink("https://www.instagram.com/p/CxYz123/")).toBeNull();
+    expect(detectAndCleanSocialLink("https://www.instagram.com/reel/CxYz123/")).toBeNull();
+    expect(detectAndCleanSocialLink("https://www.instagram.com/reels/CxYz123/")).toBeNull();
+    expect(detectAndCleanSocialLink("https://www.instagram.com/explore/")).toBeNull();
+  });
+
+  it("takes the owner from a stories link", () => {
+    expect(detectAndCleanSocialLink("https://www.instagram.com/stories/jayanth_m_b/3456")?.username).toBe("jayanth_m_b");
   });
 });
