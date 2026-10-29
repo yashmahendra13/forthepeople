@@ -249,6 +249,19 @@ export function dataCoverage(subs: readonly SubMetric[]): { measured: number; to
   return { measured: subs.filter((m) => !m.noData).length, total: subs.length };
 }
 
+/**
+ * Governance sub-score for the share of the allocated budget that was spent
+ * (0-100). Rises evenly from 0 at 0 % to 50 at 60 % and 100 at 80 %, stays at
+ * 100 above that (spending more than the allocation is not scored higher),
+ * and is never below 0.
+ */
+export function budgetUtilizationScore(util: number): number {
+  if (!Number.isFinite(util) || util <= 0) return 0;
+  if (util >= 80) return 100;
+  if (util >= 60) return 50 + ((util - 60) / 20) * 50;
+  return (util / 60) * 50;
+}
+
 function avg(scores: number[]): number {
   if (scores.length === 0) return 50;
   return scores.reduce((a, b) => a + b, 0) / scores.length;
@@ -268,10 +281,7 @@ async function calcGovernance(districtId: string): Promise<CategoryResult> {
     const totalAllocated = budget.reduce((s, b) => s + b.allocated, 0);
     const totalSpent = budget.reduce((s, b) => s + b.spent, 0);
     const util = totalAllocated > 0 ? (totalSpent / totalAllocated) * 100 : 50;
-    const score = util >= 80 && util <= 95 ? 100
-      : util >= 60 ? ((util - 60) / 20) * 80
-      : (util / 60) * 50;
-    sub.budgetUtilization = { value: Math.round(util), max: 100, score: Math.round(score), label: "Budget Utilization (%)" };
+    sub.budgetUtilization = { value: Math.round(util), max: 100, score: Math.round(budgetUtilizationScore(util)), label: "Budget Utilization (%)" };
 
     const lapsed = budget.reduce((s, b) => s + (b.lapsed || 0), 0);
     const lapsedPct = totalAllocated > 0 ? (lapsed / totalAllocated) * 100 : 0;

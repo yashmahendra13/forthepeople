@@ -10,6 +10,10 @@ Branch `audit-fixes-2026-09`, five parallel work-streams merged from one end-to-
 production site (prod = `38df958`, deployed 2026-06-11). Nothing here is deployed until it is
 reviewed and pushed; see "Manual actions" at the bottom of this entry.
 
+### Fixed — district report card: budget-spent score (branch `fix/health-score-budget-utilisation`, 2026-10-29)
+
+- The Governance "Budget Utilization" sub-score was computed inline with a middle band that started at 0 and no upper limit: a district that spent 100 % of its allocation scored 160 (the Governance average and the grade went above what the scale allows), and one at 60 % scored 0 while one at 59 % scored 49. It is now `budgetUtilizationScore()`: 0 → 50 at 60 % → 100 at 80 %, 100 above that, always within 0-100 (`tests/health-score-budget.test.ts`). Stored scores update on the next `calculateDistrictHealthScore` run.
+
 ### Added — support nudge + support page refresh (branch `v57/support`, 2026-09-28)
 
 - A small, non-modal "Sorry to interrupt" card asks for support once, after 90 s of active (visible-tab) time across pages: never on /support, admin, contribute or payment pages, never after a verified payment on that browser, never in the first 20 s of a visit, never while another dialog or the first-visit tour is up, at most once per session; closing snoozes 7 days, "Support the project" 30 days. Prices come from `TIER_CONFIG`; en/hi/kn strings; rules unit-tested (`tests/support-nudge.test.ts`); dev-only `?nudge=1`. `/support` moved to White Calm: white bordered cards, two light bands (plans, supporters), hover lift, selected-plan outline, checkout in its own card footer.
